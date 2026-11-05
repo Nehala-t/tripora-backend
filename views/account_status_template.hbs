@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tripora Account Status Update</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f3f6fb; font-family:Arial,Helvetica,sans-serif; color:#1f2937;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f3f6fb; padding:32px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="width:100%; max-width:600px; background-color:#ffffff; border-radius:12px; overflow:hidden;">
+          
+          <tr>
+            <td align="center" style="background-color:#2563eb; padding:28px 20px;">
+              <h1 style="margin:0; color:#ffffff; font-size:28px; letter-spacing:1px;">Tripora</h1>
+              <p style="margin:8px 0 0; color:#dbeafe; font-size:14px;">Your journey starts here</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:32px 28px;">
+              <h2 style="margin:0 0 18px; color:#111827; font-size:22px;">
+                Account Status Update
+              </h2>
+
+              <p style="font-size:15px; line-height:1.8; margin:0 0 16px;">
+                Hello {{firstName}},
+              </p>
+
+              <p style="font-size:15px; line-height:1.8; margin:0 0 20px;">
+                Your Tripora account status has been updated by an administrator.
+              </p>
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f8fafc; border:1px solid #e5e7eb; border-radius:8px;">
+                <tr>
+                  <td style="padding:18px 20px;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#6b7280;">
+                      Current account status
+                    </p>
+
+                    <p style="margin:0; font-size:20px; font-weight:bold; text-transform:capitalize; color:#2563eb;">
+                      {{status}}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              {{#if (eq status "active")}}
+                <p style="font-size:15px; line-height:1.8; margin:20px 0;">
+                  Your account is active. You can continue using the available Tripora features according to your account role.
+                </p>
+              {{else if (eq status "inactive")}}
+                <p style="font-size:15px; line-height:1.8; margin:20px 0;">
+                  Your account is currently inactive. If you believe this change was made in error, please contact Tripora support.
+                </p>
+              {{else if (eq status "suspended")}}
+                <p style="font-size:15px; line-height:1.8; margin:20px 0;">
+                  Your account has been suspended. Please contact Tripora support if you need clarification or assistance.
+                </p>
+              {{/if}}
+
+              <p style="font-size:15px; line-height:1.8; margin:20px 0 0;">
+                Thank you for being part of Tripora.
+              </p>
+
+              <p style="font-size:15px; line-height:1.8; margin:18px 0 0;">
+                Best regards,<br />
+                <strong>The Tripora Team</strong>
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" style="background-color:#f8fafc; padding:20px; border-top:1px solid #e5e7eb;">
+              <p style="margin:0 0 6px; font-size:12px; color:#6b7280;">
+                This is an automated email. Please do not reply directly.
+              </p>
+              <p style="margin:0; font-size:12px; color:#9ca3af;">
+                &copy; {{year}} Tripora. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

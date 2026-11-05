@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{title}}</title>
+</head>
+
+<body style="margin:0; padding:0; background:#f3f4f6; font-family:Arial,Helvetica,sans-serif; color:#111827;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding:30px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+          style="max-width:600px; background:#ffffff; border-radius:12px; overflow:hidden;">
+
+          <tr>
+            <td style="background:#0f766e; padding:28px 24px; text-align:center;">
+              <h1 style="margin:0; color:#ffffff; font-size:28px;">Tripora</h1>
+              <p style="margin:8px 0 0; color:#d1fae5; font-size:14px;">
+                Your next adventure starts here
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:32px 28px;">
+              <p style="font-size:15px; line-height:1.6; margin-top:0;">
+                Hello {{firstName}},
+              </p>
+
+              <h2 style="font-size:22px; margin:20px 0 12px; color:#111827;">
+                {{title}}
+              </h2>
+
+              <p style="font-size:15px; line-height:1.8; color:#4b5563;">
+                {{message}}
+              </p>
+
+              {{#if bookingReference}}
+                <div style="margin:24px 0; padding:16px; background:#f0fdfa; border-left:4px solid #0f766e; border-radius:4px;">
+                  <p style="margin:0 0 6px; font-size:13px; color:#6b7280;">
+                    Booking reference
+                  </p>
+                  <p style="margin:0; font-size:17px; font-weight:bold; color:#115e59;">
+                    {{bookingReference}}
+                  </p>
+                </div>
+              {{/if}}
+
+              <p style="font-size:14px; line-height:1.7; color:#6b7280;">
+                Thank you for choosing Tripora. We hope you have a wonderful experience!
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background:#f9fafb; padding:20px; text-align:center;">
+              <p style="margin:0; color:#6b7280; font-size:12px;">
+                This is an automated notification from Tripora.
+              </p>
+              <p style="margin:8px 0 0; color:#9ca3af; font-size:12px;">
+                &copy; {{year}} Tripora. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
