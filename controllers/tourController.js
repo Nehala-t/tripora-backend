@@ -431,36 +431,36 @@ export const getAllTours = async (req, res, next) => {
       }
     }
 
-   // 7. Filter by duration in days
-if (minDuration !== undefined || maxDuration !== undefined) {
-  filter.durationDays = {};
+    // 7. Filter by duration in days
+    if (minDuration !== undefined || maxDuration !== undefined) {
+      filter.durationDays = {};
 
-  if (minDuration !== undefined) {
-    filter.durationDays.$gte = parseNumber(
-      minDuration,
-      "minDuration"
-    );
-  }
-
-  if (maxDuration !== undefined) {
-    filter.durationDays.$lte = parseNumber(
-      maxDuration,
-      "maxDuration"
-    );
-  }
-
-  if (
-    filter.durationDays.$gte !== undefined &&
-    filter.durationDays.$lte !== undefined &&
-    filter.durationDays.$gte > filter.durationDays.$lte
-  ) 
+      if (minDuration !== undefined) {
+        filter.durationDays.$gte = parseNumber(
+          minDuration,
+          "minDuration"
+        );
+      }
 
       if (maxDuration !== undefined) {
-        filter.durationMinutes.$lte = parseNumber(
+        filter.durationDays.$lte = parseNumber(
           maxDuration,
           "maxDuration"
         );
       }
+
+      if (
+        filter.durationDays.$gte !== undefined &&
+        filter.durationDays.$lte !== undefined &&
+        filter.durationDays.$gte > filter.durationDays.$lte
+      )
+
+        if (maxDuration !== undefined) {
+          filter.durationMinutes.$lte = parseNumber(
+            maxDuration,
+            "maxDuration"
+          );
+        }
 
       if (
         filter.durationMinutes.$gte !== undefined &&

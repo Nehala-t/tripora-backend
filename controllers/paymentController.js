@@ -90,34 +90,34 @@ export const createCheckoutSession = async (req, res, next) => {
     const tourTitle = booking.tourId?.title || "Tripora Tour";
 
     const session = await stripe.checkout.sessions.create({
-  mode: "payment",
+      mode: "payment",
 
-  customer_email: booking.travelerDetails.email,
+      customer_email: booking.travelerDetails.email,
 
-  client_reference_id: booking._id.toString(),
+      client_reference_id: booking._id.toString(),
 
-  metadata: {
-    bookingId: booking._id.toString(),
-    bookingReference: booking.bookingReference,
-  },
-
- line_items: [
-  {
-    price_data: {
-      currency: booking.currency.toLowerCase(),
-      product_data: {
-        name: booking.tourId?.title || "Tripora Tour",
+      metadata: {
+        bookingId: booking._id.toString(),
+        bookingReference: booking.bookingReference,
       },
-      unit_amount: Math.round(booking.totalPrice * 100),
-    },
-    quantity: 1,
-  },
-],
 
-  success_url: `${process.env.FRONTEND_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      line_items: [
+        {
+          price_data: {
+            currency: booking.currency.toLowerCase(),
+            product_data: {
+              name: booking.tourId?.title || "Tripora Tour",
+            },
+            unit_amount: Math.round(booking.totalPrice * 100),
+          },
+          quantity: 1,
+        },
+      ],
 
-  cancel_url: `${process.env.FRONTEND_URL}/payment/cancel?booking_id=${booking._id}`,
-});
+      success_url: `${process.env.FRONTEND_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+
+      cancel_url: `${process.env.FRONTEND_URL}/payment/cancel?booking_id=${booking._id}`,
+    });
 
     booking.paymentMethod = "stripe";
     booking.stripeCheckoutSessionId = session.id;
@@ -254,8 +254,8 @@ export const verifyCheckoutSession = async (req, res, next) => {
 // ==================================================
 
 export const handleStripeWebhook = async (req, res) => {
-    console.log("🔥 STRIPE WEBHOOK ROUTE HIT");
-console.log("Stripe signature exists:", Boolean(req.headers["stripe-signature"]));
+  console.log("🔥 STRIPE WEBHOOK ROUTE HIT");
+  console.log("Stripe signature exists:", Boolean(req.headers["stripe-signature"]));
   const signature = req.headers["stripe-signature"];
 
   let event;
@@ -267,12 +267,12 @@ console.log("Stripe signature exists:", Boolean(req.headers["stripe-signature"])
       process.env.STRIPE_WEBHOOK_SECRET
     );
     console.log("========== STRIPE WEBHOOK ==========");
-console.log("Event:", event.type);
-console.log("Session ID:", event.data.object.id);
-console.log("Payment status:", event.data.object.payment_status);
-console.log("Amount:", event.data.object.amount_total);
-console.log("Currency:", event.data.object.currency);
-console.log("Metadata:", event.data.object.metadata);
+    console.log("Event:", event.type);
+    console.log("Session ID:", event.data.object.id);
+    console.log("Payment status:", event.data.object.payment_status);
+    console.log("Amount:", event.data.object.amount_total);
+    console.log("Currency:", event.data.object.currency);
+    console.log("Metadata:", event.data.object.metadata);
   } catch (error) {
     console.error("Stripe webhook signature error:", error.message);
 
@@ -297,7 +297,7 @@ console.log("Metadata:", event.data.object.metadata);
         });
       }
 
-       
+
 
       const booking = await Booking.findOne({
         _id: bookingId,
@@ -305,14 +305,14 @@ console.log("Metadata:", event.data.object.metadata);
       });
 
       // DEBUG LOGS — place them here
-console.log("Booking found:", Boolean(booking));
+      console.log("Booking found:", Boolean(booking));
 
-if (booking) {
-  console.log("Booking ID:", booking._id);
-  console.log("Database total:", booking.totalPrice);
-  console.log("Database currency:", booking.currency);
-  console.log("Database payment status:", booking.paymentStatus);
-}
+      if (booking) {
+        console.log("Booking ID:", booking._id);
+        console.log("Database total:", booking.totalPrice);
+        console.log("Database currency:", booking.currency);
+        console.log("Database payment status:", booking.paymentStatus);
+      }
 
       if (!booking) {
         console.error("Booking not found for Stripe session:", session.id);
@@ -348,7 +348,7 @@ if (booking) {
         // The operator must still approve the booking.
         await booking.save();
         console.log("SUCCESS: Booking payment updated to PAID");
-  console.log("Updated payment status:", booking.paymentStatus);
+        console.log("Updated payment status:", booking.paymentStatus);
       }
     }
 
@@ -372,7 +372,7 @@ if (booking) {
         );
       }
     }
-    
+
 
     return res.status(200).json({ received: true });
   } catch (error) {

@@ -26,12 +26,12 @@ const isValidMeetingPoint = (value) => {
 
   return Boolean(
     meetingPoint &&
-      typeof meetingPoint === "object" &&
-      !Array.isArray(meetingPoint) &&
-      typeof meetingPoint.name === "string" &&
-      meetingPoint.name.trim() &&
-      typeof meetingPoint.address === "string" &&
-      meetingPoint.address.trim()
+    typeof meetingPoint === "object" &&
+    !Array.isArray(meetingPoint) &&
+    typeof meetingPoint.name === "string" &&
+    meetingPoint.name.trim() &&
+    typeof meetingPoint.address === "string" &&
+    meetingPoint.address.trim()
   );
 };
 

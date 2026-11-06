@@ -172,15 +172,15 @@ const tourSchema = new mongoose.Schema(
     },
 
     // Operator's WhatsApp contact number
-   whatsappNumber: {
-  type: String,
-  trim: true,
-  required: true,
-  match: [
-    /^\+[1-9]\d{7,14}$/,
-    "Enter a valid WhatsApp number with country code, e.g. +919876543210",
-  ],
-},
+    whatsappNumber: {
+      type: String,
+      trim: true,
+      required: true,
+      match: [
+        /^\+[1-9]\d{7,14}$/,
+        "Enter a valid WhatsApp number with country code, e.g. +919876543210",
+      ],
+    },
 
     images: {
       type: [imageSchema],

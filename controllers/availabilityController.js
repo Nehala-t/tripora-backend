@@ -57,8 +57,7 @@ const parsePositiveNumber = (value, fieldName, allowZero = false) => {
     (allowZero ? number < 0 : number < 1)
   ) {
     throw new HttpError(
-      `${fieldName} must be a valid ${
-        allowZero ? "non-negative" : "positive"
+      `${fieldName} must be a valid ${allowZero ? "non-negative" : "positive"
       } number`,
       400
     );
@@ -577,9 +576,7 @@ export const updateAvailabilitySlot = async (req, res, next) => {
       slot.blockedReason = String(body.blockedReason).trim();
     }
 
-    if (slot.startAt <= new Date()) {
-      throw new HttpError("The slot must start in the future", 400);
-    }
+  
 
     // Prevent the updated slot from overlapping another active slot.
     const overlappingSlot = await AvailabilitySlot.findOne({

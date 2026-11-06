@@ -9,7 +9,7 @@ import {
   deleteDestination,
   getFeaturedDestinations,
   getDestinationsByCountry,
-  
+
 } from "../controllers/destinationController.js";
 
 import { authMiddleware } from "../middleware/authMiddleware.js";

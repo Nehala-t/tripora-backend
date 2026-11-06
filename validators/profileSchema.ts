@@ -1,4 +1,3 @@
-import * as yup from "yup";
 
 // ========================================
 // PERSONAL PROFILE VALIDATION

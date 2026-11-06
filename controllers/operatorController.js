@@ -784,10 +784,10 @@ export const updateOperatorBookingStatus = async (req, res, next) => {
     const { bookingId } = req.params;
     const { status } = req.body || {};
     console.log("========== BOOKING STATUS DEBUG ==========");
-console.log("Request body:", req.body);
-console.log("Received status:", status);
-console.log("Status type:", typeof status);
-console.log("==========================================");
+    console.log("Request body:", req.body);
+    console.log("Received status:", status);
+    console.log("Status type:", typeof status);
+    console.log("==========================================");
 
     if (!isValidId(bookingId)) {
       return res.status(400).json({

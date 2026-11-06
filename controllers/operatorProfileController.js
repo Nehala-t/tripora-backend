@@ -20,30 +20,32 @@ const findOperator = async (userId) => {
 // ==================================================
 
 
+
 export const getOperatorProfile = async (req, res, next) => {
   try {
-    const operator = await findOperator(req.user.user_id);
-
-    // Check authentication
-  if (!req.user || !req.user.user_id) {
-    console.log("ERROR: No authenticated user");
-
-    return next(
-      new HttpError("Unauthorized user", 401)
-    );
-  }
-
-    if (!operator) {
+    // 1. Check authentication
+    if (!req.user || !req.user.user_id) {
       return next(
-        new HttpError("Operator not found or inactive", 404)
+        new HttpError("Unauthorized user", 401)
       );
     }
 
+    // 2. Find active operator
+    const operator = await findOperator(req.user.user_id);
+
+    if (!operator) {
+      return next(
+        new HttpError("Operator not found", 404)
+      );
+    }
+
+    // 3. Return operator profile
     return res.status(200).json({
       success: true,
       message: "Operator profile fetched successfully",
       operator: {
         _id: operator._id,
+        role: operator.role,
         firstName: operator.firstName,
         lastName: operator.lastName,
         fullName: operator.fullName,
@@ -53,14 +55,18 @@ export const getOperatorProfile = async (req, res, next) => {
         bio: operator.bio,
         country: operator.country,
         city: operator.city,
-        operatorProfile: operator.operatorProfile,
-        sellerVerificationStatus:
-          operator.sellerVerificationStatus,
-        sellerRejectionReason:
-          operator.sellerRejectionReason,
-        sellerApplicationSubmittedAt:
-          operator.sellerApplicationSubmittedAt,
-        sellerApprovedAt: operator.sellerApprovedAt,
+
+        // Operator business details
+        operatorProfile: {
+          businessName: operator.operatorProfile?.businessName || "",
+          businessDescription:
+            operator.operatorProfile?.businessDescription || "",
+          businessEmail: operator.operatorProfile?.businessEmail || "",
+          businessPhone: operator.operatorProfile?.businessPhone || "",
+          website: operator.operatorProfile?.website || "",
+          businessAddress: operator.operatorProfile?.businessAddress || "",
+        },
+
         createdAt: operator.createdAt,
       },
     });
@@ -68,6 +74,7 @@ export const getOperatorProfile = async (req, res, next) => {
     next(error);
   }
 };
+
 
 
 // ==================================================
@@ -83,13 +90,13 @@ export const updateOperatorProfile = async (
     const operator = await findOperator(req.user.user_id);
 
     // Check authentication
-  if (!req.user || !req.user.user_id) {
-    console.log("ERROR: No authenticated user");
+    if (!req.user || !req.user.user_id) {
+      console.log("ERROR: No authenticated user");
 
-    return next(
-      new HttpError("Unauthorized user", 401)
-    );
-  }
+      return next(
+        new HttpError("Unauthorized user", 401)
+      );
+    }
 
     if (!operator) {
       return next(new HttpError("Operator not found", 404));
@@ -166,13 +173,13 @@ export const updateOperatorProfileImage = async (
     const operator = await findOperator(req.user.user_id);
 
     // Check authentication
-  if (!req.user || !req.user.user_id) {
-    console.log("ERROR: No authenticated user");
+    if (!req.user || !req.user.user_id) {
+      console.log("ERROR: No authenticated user");
 
-    return next(
-      new HttpError("Unauthorized user", 401)
-    );
-  }
+      return next(
+        new HttpError("Unauthorized user", 401)
+      );
+    }
 
     if (!operator) {
       return next(new HttpError("Operator not found", 404));
@@ -215,13 +222,13 @@ export const updateOperatorBusinessDetails = async (
     const operator = await findOperator(req.user.user_id);
 
     // Check authentication
-  if (!req.user || !req.user.user_id) {
-    console.log("ERROR: No authenticated user");
+    if (!req.user || !req.user.user_id) {
+      console.log("ERROR: No authenticated user");
 
-    return next(
-      new HttpError("Unauthorized user", 401)
-    );
-  }
+      return next(
+        new HttpError("Unauthorized user", 401)
+      );
+    }
 
     if (!operator) {
       return next(new HttpError("Operator not found", 404));
@@ -253,16 +260,16 @@ export const updateOperatorBusinessDetails = async (
       }
     }
 
-  if (
-  operator.operatorProfile?.businessEmail &&
-  !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-    operator.operatorProfile.businessEmail
-  )
-) {
-  return next(
-    new HttpError("Please provide a valid business email", 400)
-  );
-}
+    if (
+      operator.operatorProfile?.businessEmail &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        operator.operatorProfile.businessEmail
+      )
+    ) {
+      return next(
+        new HttpError("Please provide a valid business email", 400)
+      );
+    }
 
     await operator.save();
 
@@ -291,13 +298,13 @@ export const getOperatorVerificationStatus = async (
 
 
     // Check authentication
-  if (!req.user || !req.user.user_id) {
-    console.log("ERROR: No authenticated user");
+    if (!req.user || !req.user.user_id) {
+      console.log("ERROR: No authenticated user");
 
-    return next(
-      new HttpError("Unauthorized user", 401)
-    );
-  }
+      return next(
+        new HttpError("Unauthorized user", 401)
+      );
+    }
 
     if (!operator) {
       return next(new HttpError("Operator not found", 404));

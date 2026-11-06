@@ -51,7 +51,7 @@ export const registerValidator = [
 
   body("role")
     .optional()
-    .isIn(["user", "operator","admin"])
+    .isIn(["user", "operator", "admin"])
     .withMessage("Role must be either user or seller"),
 ];
 

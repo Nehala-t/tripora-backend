@@ -17,7 +17,7 @@ const notificationSchema = new mongoose.Schema(
       enum: [
         // Authentication and account
         "account_created",
-"login_success",
+        "login_success",
         "email_verification",
         "password_changed",
         "profile_updated",
@@ -62,10 +62,10 @@ const notificationSchema = new mongoose.Schema(
         "review_reply",
 
         "availability_created",
-"availability_updated",
-"availability_deleted",
-"availability_blocked",
-"availability_unblocked",
+        "availability_updated",
+        "availability_deleted",
+        "availability_blocked",
+        "availability_unblocked",
 
         // Support and general
         "support_ticket_created",

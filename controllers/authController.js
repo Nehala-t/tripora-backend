@@ -78,33 +78,33 @@ export const userRegister = async (req, res, next) => {
       role,
     });
 
-  
-const { token: verificationToken, hashedToken } = createEmailToken();
 
-newUser.emailVerified = false;
-newUser.emailVerificationTokenHash = hashedToken;
-newUser.emailVerificationExpires = new Date(
-  Date.now() + 24 * 60 * 60 * 1000
-);
+    const { token: verificationToken, hashedToken } = createEmailToken();
 
-await newUser.save();
+    newUser.emailVerified = false;
+    newUser.emailVerificationTokenHash = hashedToken;
+    newUser.emailVerificationExpires = new Date(
+      Date.now() + 24 * 60 * 60 * 1000
+    );
 
-const verificationUrl =
-  `${frontendUrl()}/verify-email?token=${encodeURIComponent(verificationToken)}`;
+    await newUser.save();
 
-try {
-  await sendEmail({
-    to: newUser.email,
-    subject: "Verify your Tripora email address",
-    text: [
-      `Hello ${newUser.firstName},`,
-      "",
-      "Please verify your email address to complete your Tripora account setup.",
-      `Verify your email: ${verificationUrl}`,
-      "",
-      "This link expires in 24 hours.",
-    ].join("\n"),
-    html: `
+    const verificationUrl =
+      `${frontendUrl()}/verify-email?token=${encodeURIComponent(verificationToken)}`;
+
+    try {
+      await sendEmail({
+        to: newUser.email,
+        subject: "Verify your Tripora email address",
+        text: [
+          `Hello ${newUser.firstName},`,
+          "",
+          "Please verify your email address to complete your Tripora account setup.",
+          `Verify your email: ${verificationUrl}`,
+          "",
+          "This link expires in 24 hours.",
+        ].join("\n"),
+        html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 24px;">
         <h2>Welcome to Tripora!</h2>
         <p>Hello ${newUser.firstName},</p>
@@ -118,15 +118,15 @@ try {
         <p>This link expires in 24 hours.</p>
       </div>
     `,
-  });
+      });
 
-  console.log("Verification email sent to:", newUser.email);
-} catch (emailError) {
-  console.error("Verification email failed:", emailError.message);
-}
+      console.log("Verification email sent to:", newUser.email);
+    } catch (emailError) {
+      console.error("Verification email failed:", emailError.message);
+    }
 
 
-   
+
     // Determine notification message based on user role
     const isOperator = newUser.role === "operator";
 

@@ -33,7 +33,7 @@ export const authMiddleware = (req, res, next) => {
     req.user = decoded;
 
     // Temporary debugging logs
-    console.log("Authenticated user ID:", 
+    console.log("Authenticated user ID:",
       decoded.user_id || decoded._id || decoded.id || decoded.userId
     );
     console.log("Authenticated role:", decoded.role);

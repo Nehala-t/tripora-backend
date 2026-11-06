@@ -114,9 +114,9 @@ const bookingSchema = new mongoose.Schema(
       default: null,
     },
     stripeCheckoutSessionId: {
-  type: String,
-  default: null,
-},
+      type: String,
+      default: null,
+    },
 
     status: {
       type: String,

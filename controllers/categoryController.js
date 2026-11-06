@@ -113,9 +113,9 @@ export const createCategory = async (req, res, next) => {
       description: cleanDescription,
       image: imageFile
         ? {
-            url: imageFile.path,
-            publicId: imageFile.filename,
-          }
+          url: imageFile.path,
+          publicId: imageFile.filename,
+        }
         : undefined,
       isActive:
         isActive !== undefined
@@ -407,9 +407,8 @@ export const updateCategoryStatus = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: `Category ${
-        category.isActive ? "activated" : "deactivated"
-      } successfully`,
+      message: `Category ${category.isActive ? "activated" : "deactivated"
+        } successfully`,
       data: category,
     });
   } catch (error) {

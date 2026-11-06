@@ -1020,7 +1020,7 @@ export const getAllPayments = async (req, res, next) => {
     if (req.query.status) {
       filter.status = req.query.status;
     }
-        if (req.query.status) {
+    if (req.query.status) {
       filter.status = req.query.status;
     }
 
