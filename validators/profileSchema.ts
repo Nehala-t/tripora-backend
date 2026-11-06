@@ -1,205 +1,195 @@
 
+import { body } from "express-validator";
+
+
+
 // ========================================
 // PERSONAL PROFILE VALIDATION
 // ========================================
 
-export const profileSchema = yup
-  .object({
-    firstName: yup
-      .string()
-      .trim()
-      .required("Please enter your first name")
-      .min(2, "First name must contain at least 2 characters")
-      .max(50, "First name cannot exceed 50 characters")
-      .matches(
-        /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/,
-        "First name should contain only letters"
-      ),
+export const profileValidator = [
+  body("firstName")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter your first name")
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage("First name must contain 2 to 50 characters")
+    .bail()
+    .matches(/^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/)
+    .withMessage("First name should contain only letters"),
 
-    lastName: yup
-      .string()
-      .trim()
-      .required("Please enter your last name")
-      .min(2, "Last name must contain at least 2 characters")
-      .max(50, "Last name cannot exceed 50 characters")
-      .matches(
-        /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/,
-        "Last name should contain only letters"
-      ),
+  body("lastName")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter your last name")
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Last name must contain 2 to 50 characters")
+    .bail()
+    .matches(/^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/)
+    .withMessage("Last name should contain only letters"),
 
-    phone: yup
-      .string()
-      .trim()
-      .max(25, "Phone number cannot exceed 25 characters")
-      .defined(),
+  body("phone")
+    .optional({ values: "null" })
+    .trim()
+    .isLength({ max: 25 })
+    .withMessage("Phone number cannot exceed 25 characters"),
 
-    bio: yup
-      .string()
-      .trim()
-      .max(1000, "Bio cannot exceed 1000 characters")
-      .defined(),
+  body("bio")
+    .optional()
+    .trim()
+    .isLength({ max: 1000 })
+    .withMessage("Bio cannot exceed 1000 characters"),
 
-    country: yup
-      .string()
-      .trim()
-      .max(100, "Country cannot exceed 100 characters")
-      .defined(),
+  body("country")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage("Country cannot exceed 100 characters"),
 
-    city: yup
-      .string()
-      .trim()
-      .max(100, "City cannot exceed 100 characters")
-      .defined(),
-  })
-  .required();
+  body("city")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage("City cannot exceed 100 characters"),
 
-export type ProfileFormValues = yup.InferType<typeof profileSchema>;
+ 
+];
 
 // ========================================
 // TRAVEL PREFERENCES VALIDATION
 // ========================================
 
-export const travelPreferencesSchema = yup
-  .object({
-    preferredLanguage: yup
-      .string()
-      .trim()
-      .required("Please select your preferred language")
-      .max(20, "Language cannot exceed 20 characters"),
+export const travelPreferencesValidator = [
+  body("preferredLanguage")
+    .trim()
+    .notEmpty()
+    .withMessage("Please select your preferred language")
+    .bail()
+    .isLength({ max: 20 })
+    .withMessage("Language cannot exceed 20 characters"),
 
-    preferredCurrency: yup
-      .mixed<"INR" | "USD" | "EUR" | "GBP" | "AED">()
-      .oneOf(
-        ["INR", "USD", "EUR", "GBP", "AED"],
-        "Please select a valid currency"
-      )
-      .required("Please select your preferred currency"),
+  body("preferredCurrency")
+    .isIn(["INR", "USD", "EUR", "GBP", "AED"])
+    .withMessage("Please select a valid currency"),
 
-    preferredDestinations: yup
-      .array()
-      .of(
-        yup
-          .string()
-          .trim()
-          .required("Destination cannot be empty")
-          .max(100, "Destination cannot exceed 100 characters")
-      )
-      .max(20, "You can add up to 20 destinations")
-      .required(),
+  body("preferredDestinations")
+    .isArray({ max: 20 })
+    .withMessage("You can add up to 20 destinations"),
 
-    travelStyle: yup
-      .mixed<
-        | "adventure"
-        | "relaxation"
-        | "luxury"
-        | "budget"
-        | "cultural"
-        | "family"
-        | "solo"
-      >()
-      .oneOf(
-        [
-          "adventure",
-          "relaxation",
-          "luxury",
-          "budget",
-          "cultural",
-          "family",
-          "solo",
-        ],
-        "Please select a valid travel style"
-      )
-      .required("Please select your travel style"),
+  body("preferredDestinations.*")
+    .trim()
+    .notEmpty()
+    .withMessage("Destination cannot be empty")
+    .bail()
+    .isLength({ max: 100 })
+    .withMessage("Destination cannot exceed 100 characters"),
 
-    budget: yup
-      .mixed<"Low" | "Medium" | "High">()
-      .oneOf(["Low", "Medium", "High"], "Please select a valid budget")
-      .required("Please select your travel budget"),
+  body("travelStyle")
+    .isIn([
+      "adventure",
+      "relaxation",
+      "luxury",
+      "budget",
+      "cultural",
+      "family",
+      "solo",
+    ])
+    .withMessage("Please select a valid travel style"),
 
-    travelInterests: yup
-      .array()
-      .of(
-        yup
-          .mixed<
-            | "adventure"
-            | "culture"
-            | "food"
-            | "nature"
-            | "sightseeing"
-            | "water_sports"
-            | "wildlife"
-            | "wellness"
-          >()
-          .oneOf([
-            "adventure",
-            "culture",
-            "food",
-            "nature",
-            "sightseeing",
-            "water_sports",
-            "wildlife",
-            "wellness",
-          ])
-          .required()
-      )
-      .required(),
-  })
-  .required();
+  body("budget")
+    .isIn(["Low", "Medium", "High"])
+    .withMessage("Please select a valid budget"),
 
-export type TravelPreferencesFormValues = yup.InferType<
-  typeof travelPreferencesSchema
->;
+  body("travelInterests")
+    .isArray()
+    .withMessage("Travel interests must be an array"),
+
+  body("travelInterests.*")
+    .isIn([
+      "adventure",
+      "culture",
+      "food",
+      "nature",
+      "sightseeing",
+      "water_sports",
+      "wildlife",
+      "wellness",
+    ])
+    .withMessage("Please select valid travel interests"),
+
+  
+];
 
 // ========================================
-// OPERATOR APPLICATION VALIDATION
+// OPERATOR BUSINESS DETAILS VALIDATION
 // ========================================
 
-export const operatorSchema = yup
-  .object({
-    businessName: yup
-      .string()
-      .trim()
-      .required("Please enter your business name")
-      .max(150, "Business name cannot exceed 150 characters"),
+export const operatorValidator = [
+  body("businessName")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter your business name")
+    .bail()
+    .isLength({ max: 150 })
+    .withMessage("Business name cannot exceed 150 characters"),
 
-    businessEmail: yup
-      .string()
-      .trim()
-      .required("Please enter your business email")
-      .email("Please enter a valid business email"),
+  body("businessEmail")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter your business email")
+    .bail()
+    .isEmail()
+    .withMessage("Please enter a valid business email")
+    .normalizeEmail(),
 
-    businessPhone: yup
-      .string()
-      .trim()
-      .required("Please enter your business phone number")
-      .max(25, "Phone number cannot exceed 25 characters"),
+  body("businessPhone")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter your business phone number")
+    .bail()
+    .isLength({ max: 25 })
+    .withMessage("Phone number cannot exceed 25 characters"),
 
-    website: yup
-      .string()
-      .trim()
-      .defined()
-      .test(
-        "valid-url",
-        "Please enter a valid website URL",
-        (value) =>
-          !value ||
-          /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?::\d+)?(?:[/?#][^\s]*)?$/i.test(
-            value
-          )
-      ),
+  body("website")
+    .optional()
+    .trim()
+    .custom((value) => {
+      if (!value) return true;
 
-    businessAddress: yup
-      .string()
-      .trim()
-      .required("Please enter your business address")
-      .max(250, "Business address cannot exceed 250 characters"),
+      try {
+        const url = new URL(value);
 
-    businessDescription: yup
-      .string()
-      .trim()
-      .required("Please enter your business description")
-      .max(2000, "Description cannot exceed 2000 characters"),
-  })
-  .required();
+        if (!["http:", "https:"].includes(url.protocol)) {
+          throw new Error("Invalid protocol");
+        }
 
-export type OperatorFormValues = yup.InferType<typeof operatorSchema>;
+        if (!url.hostname.includes(".")) {
+          throw new Error("Invalid hostname");
+        }
+
+        return true;
+      } catch {
+        throw new Error("Please enter a valid website URL");
+      }
+    }),
+
+  body("businessAddress")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter your business address")
+    .bail()
+    .isLength({ max: 250 })
+    .withMessage("Business address cannot exceed 250 characters"),
+
+  body("businessDescription")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter your business description")
+    .bail()
+    .isLength({ max: 2000 })
+    .withMessage("Description cannot exceed 2000 characters"),
+
+  
+];
